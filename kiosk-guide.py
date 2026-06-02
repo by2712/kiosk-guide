@@ -10,9 +10,9 @@ st.write('자연어를 입력 받아 적합한 증명서를 표시합니다')
 
 with st.form('입력창', clear_on_submit=True):
     content = st.text_input('발급을 원하시는 증명서 또는 관련 업무를 입력해주세요')
-    btn_submitted, btn_cancel, btn_cleared = st.columns(3)
-    submitted = btn_submitted.form_submit_button('확인')
-    cancel = btn_cancel.form_submit_button('취소')
+    btn_submitted, btn_cancel, btn_cleared = st.columns(2)
+    submitted = btn_submitted.form_submit_button('확인', use_container_width=True)
+    cancel = btn_cancel.form_submit_button('취소', use_container_width=True)
 
 if submitted:
     df_results = df[df['키워드'].str.contains(content)]
