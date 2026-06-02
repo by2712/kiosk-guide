@@ -1,6 +1,4 @@
 import pandas as pd
-import os
-import json
 import streamlit as st
 
 df = pd.read_excel('무인민원발급기_증명서_목록.xlsx')
