@@ -44,18 +44,21 @@ if submitted:
 
     st.write(f'검색어 : {content}')
 
-    for r, row in df_final.iterrows():
-        if row['연번'] in list_a and row['연번'] in list_b:
-            source = '[키워드+AI]'
-        elif row['연번'] in list_a:
-            source = '[키워드]'
-        else:
-            source = '[AI]'
+    if len(df_final) == 0:
+        st.write('검색 결과가 없습니다. 민원실로 문의해주세요.')
+    else:
+        for r, row in df_final.iterrows():
+            if row['연번'] in list_a and row['연번'] in list_b:
+                source = '[키워드+AI]'
+            elif row['연번'] in list_a:
+                source = '[키워드]'
+            else:
+                source = '[AI]'
 
-        col1, col2, col3 = st.columns([1, 2, 5])
-        col1.markdown(f'**{r+1}**')     # ** : 마크다운 볼드체 문법
-        col2.markdown(source)
-        col3.button(row['증명서'], use_container_width=True)
+            col1, col2, col3 = st.columns([1, 2, 5])
+            col1.markdown(f'**{r+1}**')     # ** : 마크다운 볼드체 문법
+            col2.markdown(source)
+            col3.button(row['증명서'], use_container_width=True)
 
 elif cancel:
     pass
