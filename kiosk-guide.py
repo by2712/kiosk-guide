@@ -42,7 +42,8 @@ if submitted:
 
     df_final = df[df['연번'].isin(final_list)]
 
-        
+    st.write(f'검색어 : {content}')
+
     for r, row in df_final.iterrows():
         if row['연번'] in list_a and row['연번'] in list_b:
             source = '[키워드+AI]'
