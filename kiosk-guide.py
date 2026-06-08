@@ -43,10 +43,18 @@ if submitted:
     df_final = df[df['연번'].isin(final_list)]
 
         
-    for r, result in enumerate(df_final['증명서']):
-        col1, col2 = st.columns([1, 5])
+    for r, row in df_final.iterrows():
+        if row['연번'] in list_a and row['연번'] in list_b:
+            source = '[키워드+AI]'
+        elif row['연번'] in list_a:
+            source = '[키워드]'
+        else:
+            source = '[AI]'
+
+        col1, col2, col3 = st.columns([1, 2, 5])
         col1.markdown(f'**{r+1}**')     # ** : 마크다운 볼드체 문법
-        col2.button(result, use_container_width=True)
+        col2.markdown(source)
+        col3.button(row['증명서'], use_container_width=True)
 
 elif cancel:
     pass
