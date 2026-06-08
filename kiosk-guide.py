@@ -40,7 +40,7 @@ if submitted:
 
     final_list = list(set(list_a + list_b))     # set : 중복값 제거, 자료형 set 형태
 
-    df_final = df[df['연번'].isin(final_list)]
+    df_final = df[df['연번'].isin(final_list)].reset_index(drop=True)
 
     st.write(f'검색어 : {content}')
 
