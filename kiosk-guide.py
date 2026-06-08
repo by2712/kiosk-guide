@@ -1,5 +1,6 @@
 import pandas as pd
 import streamlit as st
+import anthropic
 
 df = pd.read_excel('무인민원발급기_증명서_목록.xlsx')
 
@@ -14,13 +15,37 @@ with st.form('입력창', clear_on_submit=True):
 
 if submitted:
     df_results = df[df['키워드'].str.contains(content)]
-    df_results.index += 1
+    list_a = df_results['연번'].tolist()
 
-    # rows_count = len(df_results)
+    client = anthropic.Anthropic(api_key=st.secrets['ANTHROPIC_API_KEY'])
+
+    msg = ", ".join(df.apply(lambda x: f"{x['연번']}-{x['증명서']}", axis=1))
+
+    response = client.messages.create(
+        model = 'claude-sonnet-4-6',
+        max_tokens = 100,
+        system = '아래 목록에서만 골라서 연번만 쉼표로 답해. 다른말은 하지마.',
+        messages = [{
+            'role' : 'user',
+            'content' : f'목록 : {msg}\n질문 : {content}'
+        }]
+    )
+
+    result_text = response.content[0].text
+
+    try:
+        list_b = [int(x.strip()) for x in result_text.split(',')]
+    except:
+        list_b = []
+
+    final_list = list(set(list_a + list_b))     # set : 중복값 제거, 자료형 set 형태
+
+    df_final = df[df['연번'].isin(final_list)]
+
         
-    for r, result in enumerate(df_results['증명서']):
+    for r, result in enumerate(df_final['증명서']):
         col1, col2 = st.columns([1, 5])
-        col1.markdown(f'**{r+1}**')
+        col1.markdown(f'**{r+1}**')     # ** : 마크다운 볼드체 문법
         col2.button(result, use_container_width=True)
 
 elif cancel:
